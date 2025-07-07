@@ -2,7 +2,7 @@
 FROM alpine:latest
 
 # Set maintainer label (optional)
-LABEL maintainer="yourname@example.com"
+LABEL maintainer="noah@kasbench.org"
 
 # Environment variable to ensure utilities like psql and mongosh behave well
 ENV TERM=xterm
@@ -14,7 +14,7 @@ ENV TERM=xterm
 # - curl: For making HTTP requests to other containers/services
 # - net-tools: Includes ifconfig, netstat, route (though iproute2 is more modern)
 # - iproute2: Modern networking tools (ip addr, ip route, ss)
-# - dnsutils: For DNS lookup tools like nslookup and dig (often part of bind-tools or similar package name depending on distro)
+# - bind-tools: For DNS lookup tools like nslookup and dig (replaces dnsutils from Debian/Ubuntu)
 # - tcpdump: For network packet analysis
 # - nmap: For network exploration and security auditing
 # - postgresql-client: For connecting to PostgreSQL databases (psql)
@@ -29,7 +29,7 @@ RUN apk update && \
     curl \
     net-tools \
     iproute2 \
-    dnsutils \
+    bind-tools \
     tcpdump \
     nmap \
     postgresql-client \
