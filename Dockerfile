@@ -1,5 +1,5 @@
 # Use a lightweight base image
-FROM alpine:latest
+FROM debian:stable-slim
 
 # Set maintainer label (optional)
 LABEL maintainer="noah@kasbench.org"
@@ -7,34 +7,29 @@ LABEL maintainer="noah@kasbench.org"
 # Environment variable to ensure utilities like psql and mongosh behave well
 ENV TERM=xterm
 
-# Update package list and install common debugging tools
-# - bash: A more feature-rich shell than sh (default in Alpine)
-# - coreutils: Provides basic file, shell and text manipulation utilities (e.g., env, printenv)
-# - procps: For process utilities like ps, top
-# - curl: For making HTTP requests to other containers/services
-# - net-tools: Includes ifconfig, netstat, route (though iproute2 is more modern)
-# - iproute2: Modern networking tools (ip addr, ip route, ss)
-# - bind-tools: For DNS lookup tools like nslookup and dig (replaces dnsutils from Debian/Ubuntu)
-# - tcpdump: For network packet analysis
-# - nmap: For network exploration and security auditing
-# - postgresql-client: For connecting to PostgreSQL databases (psql)
-# - mongo-tools: For connecting to MongoDB (mongosh or older mongo shell) - may need a specific repository or different package name
-# - redis: For redis-cli to connect to Redis
-
-RUN apk update && \
-    apk add --no-cache \
+# Install dependencies and debug tools
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     bash \
     coreutils \
     procps \
     curl \
     net-tools \
     iproute2 \
-    bind-tools \
+    dnsutils \
     tcpdump \
     nmap \
     postgresql-client \
-    mongodb-tools \
-    redis
+    redis-tools \
+    gnupg \
+    ca-certificates && \
+    # Add MongoDB official repo for mongosh
+    curl -fsSL https://pgp.mongodb.com/server-6.0.asc | gpg --dearmor -o /usr/share/keyrings/mongodb-server-6.0.gpg && \
+    echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/debian bookworm/mongodb-org/6.0 main" > /etc/apt/sources.list.d/mongodb-org-6.0.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends mongodb-mongosh && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Default command when the container starts (optional, can be overridden)
 # Here, we start a bash shell.
