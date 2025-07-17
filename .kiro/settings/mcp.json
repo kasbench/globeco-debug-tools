@@ -1,0 +1,39 @@
+{
+  "mcpServers": {
+    "fetch": {
+      "command": "uvx",
+      "args": ["mcp-server-fetch"],
+      "env": {},
+      "disabled": true,
+      "autoApprove": []
+    },
+    "playwright": {
+      "command": "npx @playwright/mcp@latest",
+      "env": {}
+    },
+    "MetaMCP": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@metamcp/mcp-server-metamcp@latest"
+      ],
+      "env": {
+        "METAMCP_API_KEY": "sk_mt_SnHk9s2Xznzjjb83Wtb429SjZihLNpKuv6T2UHQNtCe1AM0xhF6FJuEbbVIYksV3",
+        "METAMCP_API_BASE_URL": "http://localhost:12005"
+      }
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp"
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@allpepper/memory-bank-mcp@latest"
+      ],
+      "env": {
+        "MEMORY_BANK_ROOT": "/Users/noahkrieger/software/mcp/memory-bank/data"
+      }
+    }
+  }
+}
