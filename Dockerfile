@@ -23,7 +23,7 @@ RUN apt-get update && \
     redis-tools \
     gnupg \
     ca-certificates \
-    openjdk-17-jre-headless \
+    openjdk-21-jre-headless \
     wget && \
     # Add MongoDB official repo for mongosh
     curl -fsSL https://pgp.mongodb.com/server-6.0.asc | gpg --dearmor -o /usr/share/keyrings/mongodb-server-6.0.gpg && \
