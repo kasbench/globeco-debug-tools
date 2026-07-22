@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: globeco-debug-tools
+  namespace: globeco
   labels:
     app: globeco-debug-tools
 spec:
